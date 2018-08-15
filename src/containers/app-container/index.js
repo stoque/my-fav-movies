@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import axios from 'axios'
+import { injectGlobal } from 'styled-components'
 
 import Search from '../../components/search'
 import MovieCard from '../../components/movie-card'
@@ -21,7 +22,7 @@ class AppContainer extends Component {
     }
   }
 
-  loadMovie = async (movieName) => {
+  loadMovie = async (movieName = 'pulp fiction') => {
     const apiKey = 'cebb719e';
     const movieInfo = (await axios.get(`http://www.omdbapi.com/?apikey=${apiKey}&t=${movieName}`)).data
     console.log(movieInfo)
@@ -57,5 +58,29 @@ class AppContainer extends Component {
     )
   }
 }
+
+injectGlobal `
+  @import url('https://fonts.googleapis.com/css?family=Open+Sans:400,700');
+
+  *,
+  *:before,
+  *:after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html,
+  body {
+    height: 100%;
+  }
+
+  body {
+    background: #000;
+    color: #576574;
+    font-family: 'Open Sans', sans-serif;
+    padding: 0 20px;
+  }
+`
 
 export default AppContainer
