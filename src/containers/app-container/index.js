@@ -8,6 +8,7 @@ class AppContainer extends Component {
   constructor () {
     super()
     this.state = {
+      hasSearched: false,
       movieInfo: {
         poster: '',
         title: '',
@@ -20,15 +21,12 @@ class AppContainer extends Component {
     }
   }
 
-  componentDidMount () {
-    this.loadMovie('pulp fiction')
-  }
-
   loadMovie = async (movieName) => {
     const apiKey = 'cebb719e';
     const movieInfo = (await axios.get(`http://www.omdbapi.com/?apikey=${apiKey}&t=${movieName}`)).data
     console.log(movieInfo)
     this.setState({
+      hasSearched: true,
       movieInfo: {
         poster: movieInfo.Poster,
         title: movieInfo.Title,
@@ -51,7 +49,10 @@ class AppContainer extends Component {
     return (
       <div>
         <Search handleSearch={this.handleSearch} />
-        <MovieCard movieInfo={this.state.movieInfo} />
+        <MovieCard
+          movieInfo={this.state.movieInfo}
+          hasSearched={this.state.hasSearched}
+        />
       </div>
     )
   }
