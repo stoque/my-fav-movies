@@ -21,7 +21,7 @@ class AppContainer extends Component {
   loadMovie = async (movieName = 'pulp fiction') => {
     this.setState({loading: true})
     const apiKey = 'cebb719e';
-    const data = (await axios.get(`http://www.omdbapi.com/?apikey=${apiKey}&t=${movieName}`)).data
+    const data = (await axios.get(`https://www.omdbapi.com/?apikey=${apiKey}&t=${movieName}`)).data
     if (data.Response === 'True') {
       this.setState({
         hasSearched: true,
