@@ -4,40 +4,39 @@ import { injectGlobal } from 'styled-components'
 
 import Search from '../../components/search'
 import MovieCard from '../../components/movie-card'
+import ErrorMessage from '../../components/error-message'
 
 class AppContainer extends Component {
   constructor () {
     super()
     this.state = {
       hasSearched: false,
-      movieInfo: {
-        poster: '',
-        title: '',
-        year: '',
-        director: '',
-        actors: '',
-        plot: '',
-        ratings: []
-      }
+      movieInfo: null
     }
   }
 
   loadMovie = async (movieName = 'pulp fiction') => {
     const apiKey = 'cebb719e';
-    const movieInfo = (await axios.get(`http://www.omdbapi.com/?apikey=${apiKey}&t=${movieName}`)).data
-    console.log(movieInfo)
-    this.setState({
-      hasSearched: true,
-      movieInfo: {
-        poster: movieInfo.Poster,
-        title: movieInfo.Title,
-        year: movieInfo.Year,
-        director: movieInfo.Director,
-        actors: movieInfo.Actors,
-        plot: movieInfo.Plot,
-        ratings: movieInfo.Ratings
-      }
-    })
+    const data = (await axios.get(`http://www.omdbapi.com/?apikey=${apiKey}&t=${movieName}`)).data
+    if (data.Response === 'True') {
+      this.setState({
+        hasSearched: true,
+        movieInfo: {
+          poster: data.Poster,
+          title: data.Title,
+          year: data.Year,
+          director: data.Director,
+          actors: data.Actors,
+          plot: data.Plot,
+          ratings: data.Ratings
+        }
+      })
+    } else {
+      this.setState({
+        hasSearched: true,
+        movieInfo: null
+      })
+    }
   }
 
   handleSearch = (event) => {
@@ -50,10 +49,15 @@ class AppContainer extends Component {
     return (
       <div>
         <Search handleSearch={this.handleSearch} />
-        <MovieCard
-          movieInfo={this.state.movieInfo}
-          hasSearched={this.state.hasSearched}
-        />
+        {this.state.movieInfo
+          ?
+          <MovieCard
+            movieInfo={this.state.movieInfo}
+            hasSearched={this.state.hasSearched}
+          />
+          :
+          <ErrorMessage hasSearched={this.state.hasSearched} />
+        }
       </div>
     )
   }
@@ -76,7 +80,7 @@ injectGlobal `
   }
 
   body {
-    background: #000;
+    background: #EEEEEE;
     color: #576574;
     font-family: 'Open Sans', sans-serif;
     padding: 0 20px;

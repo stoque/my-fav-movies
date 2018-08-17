@@ -1,98 +1,95 @@
-import React, { Fragment } from 'react'
+import React from 'react'
 import styled from 'styled-components'
-import ErrorMessage from '../error-message'
+import ReactStars from 'react-stars'
+
+import RatingUtil from '../../utils/rating'
 
 const MovieCard = ({ movieInfo, hasSearched }) => (
-  <Fragment>
-    <Container>
-      <Overlay background={movieInfo.poster}/>
-      {movieInfo.title
-        ?
-        <Wrapper>
-          <Title>{movieInfo.title} <span>({movieInfo.year})</span></Title>
+  <Card>
+    <Title>
+      {movieInfo.title} <span>({movieInfo.year})</span>
+    </Title>
 
-          <Poster src={movieInfo.poster} alt={`${movieInfo.title} poster`} />
+    <Header>
+      <Poster src={movieInfo.poster} alt={`${movieInfo.title} poster`} />
+      <RatingList>
+        {movieInfo.ratings.map((rating, index) => (
+          <RatingItem key={index}>
+            <span>
+              {rating.Source === 'Internet Movie Database' ? 'IMDB' : rating.Source}
+            </span>
+            {rating.Value}
+            <ReactStars
+              count={10}
+              value={RatingUtil.normalizeRating(rating.Value)}
+              edit={false}
+              size={14}
+            />
+          </RatingItem>
+        ))}
+      </RatingList>
+    </Header>
 
-          <p>{movieInfo.director}</p>
-          <p>{movieInfo.actors}</p>
-          <p>{movieInfo.plot}</p>
-
-          <RatingList>
-            {movieInfo.ratings.map((rating, index) => (
-              <RatingItem key={index}>
-                <span>
-                  {rating.Source === 'Internet Movie Database' ? 'IMDB' : rating.Source}:
-                </span>
-                {rating.Value}
-              </RatingItem>
-            ))}
-          </RatingList>
-        </Wrapper>
-        :
-        <ErrorMessage hasSearched={hasSearched}/>
-      }
-    </Container>
-  </Fragment>
+    <Text>{movieInfo.director}</Text>
+    <Text>{movieInfo.actors}</Text>
+    <Text>{movieInfo.plot}</Text>
+  </Card>
 )
 
-const Container = styled.div`
-  height: 100%;
-  left: 0;
-  overflow: hidden;
-  position: absolute;
-  pointer-events: none;
-  top: 0;
-  width: 100%;
-`
-
-const Overlay = styled.div`
-  background: url(${props => props.background}) center center no-repeat;
-  background-size: cover;
-  filter: blur(30px);
-  height: 100%;
-  position: absolute;
-  transform: scale(1.2);
-  width: 100%;
-  z-index: -1;
-`
-
-const Wrapper = styled.div`
+const Card = styled.div`
   align-items: center;
-  color: #fff;
-  background: rgba(255, 255, 255, 0.1);
+  background: #fff;
+  border-radius: 6px;
+  box-shadow: 0 0 14px rgba(0, 0, 0, 0.1);
+  color: #000;
   flex-direction: column;
   display: flex;
-  margin: 80px 0;
-  padding: 20px;
+  padding: 20px 10px;
 `
 
 const Title = styled.h2`
+  color: ${props => props.color};
   font-size: 24px;
+  margin: 0 0 10px 0;
   span {
     font-size: 16px;
   }
 `
 
+const Header = styled.header`
+  display: flex;
+  justify-content: space-between;
+  margin: 0 0 20px 0;
+`
+
 const Poster = styled.img`
-  margin: 10px 0;
-  width: 200px;
+  align-self: center;
+  width: 48%;
 `
 
 const RatingList = styled.ul`
+  display: flex;
+  flex-direction: column;
   list-style: none;
-  width: 100%
+  justify-content: space-between;
+  width: 48%;
 `
 
 const RatingItem = styled.li`
-  align-items: center;
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   font-size: 18px;
+  font-weight: bold;
   span {
-    display: inline-block;
-    font-weight: bold;
-    margin: 0 4px 0 0;
-    width: 169px;
+    font-weight: normal;
+  }
+`
+
+const Text = styled.p`
+  text-align: center;
+  font-size: 14px;
+  &:not(:last-child) {
+    margin: 0 0 8px 0;
   }
 `
 
