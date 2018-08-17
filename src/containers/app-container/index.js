@@ -5,17 +5,20 @@ import { injectGlobal } from 'styled-components'
 import Search from '../../components/search'
 import MovieCard from '../../components/movie-card'
 import ErrorMessage from '../../components/error-message'
+import Spinner from '../../components/spinner'
 
 class AppContainer extends Component {
   constructor () {
     super()
     this.state = {
+      loading: false,
       hasSearched: false,
       movieInfo: null
     }
   }
 
   loadMovie = async (movieName = 'pulp fiction') => {
+    this.setState({loading: true})
     const apiKey = 'cebb719e';
     const data = (await axios.get(`http://www.omdbapi.com/?apikey=${apiKey}&t=${movieName}`)).data
     if (data.Response === 'True') {
@@ -28,15 +31,16 @@ class AppContainer extends Component {
           director: data.Director,
           actors: data.Actors,
           plot: data.Plot,
-          ratings: data.Ratings
+          ratings: data.Ratings,
         }
       })
     } else {
       this.setState({
         hasSearched: true,
-        movieInfo: null
+        movieInfo: null,
       })
     }
+    this.setState({loading: false})
   }
 
   handleSearch = (event) => {
@@ -58,6 +62,7 @@ class AppContainer extends Component {
           :
           <ErrorMessage hasSearched={this.state.hasSearched} />
         }
+        <Spinner loading={this.state.loading} />
       </div>
     )
   }
