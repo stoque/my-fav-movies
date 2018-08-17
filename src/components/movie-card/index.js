@@ -38,13 +38,13 @@ const MovieCard = ({ movieInfo, hasSearched }) => (
 
 const Card = styled.div`
   align-items: center;
-  background: #fff;
+  background: rgba(0, 0, 0, 0.7);
   border-radius: 6px;
-  box-shadow: 0 0 14px rgba(0, 0, 0, 0.1);
-  color: #000;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 1);
+  color: #fff;
   flex-direction: column;
   display: flex;
-  padding: 20px 10px;
+  padding: 20px;
 `
 
 const Title = styled.h2`
@@ -78,7 +78,7 @@ const RatingList = styled.ul`
 const RatingItem = styled.li`
   display: flex;
   flex-direction: column;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: bold;
   span {
     font-weight: normal;

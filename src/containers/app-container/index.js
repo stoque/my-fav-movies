@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import axios from 'axios'
 import { injectGlobal } from 'styled-components'
 
@@ -6,6 +6,7 @@ import Search from '../../components/search'
 import MovieCard from '../../components/movie-card'
 import ErrorMessage from '../../components/error-message'
 import Spinner from '../../components/spinner'
+import Background from '../../components/background'
 
 class AppContainer extends Component {
   constructor () {
@@ -55,10 +56,13 @@ class AppContainer extends Component {
         <Search handleSearch={this.handleSearch} />
         {this.state.movieInfo
           ?
-          <MovieCard
-            movieInfo={this.state.movieInfo}
-            hasSearched={this.state.hasSearched}
-          />
+          <Fragment>
+            <MovieCard
+              movieInfo={this.state.movieInfo}
+              hasSearched={this.state.hasSearched}
+            />
+            <Background image={this.state.movieInfo.poster}/>
+          </Fragment>
           :
           <ErrorMessage hasSearched={this.state.hasSearched} />
         }

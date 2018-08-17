@@ -44,11 +44,13 @@ const Input = styled.input`
 `
 
 const Button = styled.button`
+  background: none;
+  border: none;
+  height: 100%;
+  padding: 0 4px;
   position: absolute;
   right: 4px;
   top: 0;
-  height: 100%;
-  padding: 0 4px;
   svg {
     display: inline-block;
     fill: #000;
